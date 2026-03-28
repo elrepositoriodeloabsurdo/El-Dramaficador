@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>El Dramaficador Pro — Convierte lo trivial en épico</title>
+<meta name="description" content="¿Se te cayó el helado? ¿El Wi-Fi anduvo lento? Convierte tu tragedia cotidiana en la obra dramática que merece ser."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a0a00;
+  --card:#2a1200;
+  --card2:#3a1800;
+  --gold:#ffc107;
+  --gold-l:#ffd54f;
+  --gold-xl:rgba(255,193,7,.08);
+  --crimson:#c62828;
+  --ink:#fff8e1;
+  --ink2:#ffcc80;
+  --ink3:#a0704a;
+  --border:#4a2800;
+  --sh:0 4px 30px rgba(0,0,0,.5);
+  --sh-lg:0 8px 50px rgba(0,0,0,.6);
+  --ff:'Lora',serif;
+  --fd:'Playfair Display',serif;
+  --fm:'Space Mono',monospace;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--ff);line-height:1.6}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--card)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes flicker{0%,100%{opacity:1}50%{opacity:.8}75%{opacity:.95}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
+@keyframes reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes pop{0%{transform:scale(.92);opacity:0}70%{transform:scale(1.03)}100%{transform:scale(1);opacity:1}}
+@keyframes curtainOpen{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes glow{0%,100%{text-shadow:0 0 20px rgba(255,193,7,.3)}50%{text-shadow:0 0 40px rgba(255,193,7,.6),0 0 80px rgba(255,193,7,.2)}}
+
+/* HEADER */
+header{padding:18px 32px;display:flex;align-items:center;gap:14px;
+  border-bottom:1px solid var(--border);background:rgba(0,0,0,.4);
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.brand-ico{font-size:30px;animation:flicker 3s ease-in-out infinite}
+.brand-name{font-family:var(--fd);font-size:22px;font-weight:900;
+  color:var(--gold);letter-spacing:.02em;animation:glow 3s ease-in-out infinite}
+.brand-sub{font-size:10px;color:var(--ink3);background:var(--gold-xl);
+  border:1px solid rgba(255,193,7,.2);padding:2px 9px;border-radius:3px;
+  margin-left:8px;font-family:var(--fm)}
+.header-r{margin-left:auto}
+.api-btn{font-family:var(--fm);font-size:10px;color:var(--ink3);
+  background:transparent;border:1px solid var(--border);padding:5px 12px;
+  cursor:pointer;border-radius:3px;transition:all .2s;letter-spacing:.05em}
+.api-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* HERO */
+.hero{text-align:center;padding:52px 20px 36px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,193,7,.05) 0%,transparent 60%);
+  pointer-events:none}
+.curtain{position:absolute;top:0;bottom:0;width:50px;pointer-events:none}
+.curtain-l{left:0;background:linear-gradient(90deg,rgba(26,10,0,.9),transparent)}
+.curtain-r{right:0;background:linear-gradient(-90deg,rgba(26,10,0,.9),transparent)}
+
+.hero-eyebrow{font-family:var(--fm);font-size:10px;color:var(--gold);
+  letter-spacing:.25em;text-transform:uppercase;margin-bottom:16px;opacity:.6;
+  display:flex;align-items:center;justify-content:center;gap:12px}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'—'}
+
+.hero-title{font-family:var(--fd);font-size:clamp(30px,6vw,68px);
+  font-weight:900;font-style:italic;color:var(--gold);
+  text-shadow:0 2px 30px rgba(255,193,7,.25);margin-bottom:14px;
+  line-height:1.05;animation:fadeUp .6s ease}
+
+.hero-title-2{font-family:var(--fd);font-size:clamp(18px,3.5vw,40px);
+  font-weight:700;color:var(--ink2);font-style:normal;letter-spacing:.04em}
+
+.hero-sub{color:var(--ink3);font-size:15px;max-width:520px;
+  margin:16px auto 36px;line-height:1.8;font-style:italic}
+
+/* NIVEL SELECTOR */
+.nivel-section{max-width:700px;margin:0 auto 24px;padding:0 20px}
+.nivel-label{font-family:var(--fm);font-size:10px;color:var(--gold);
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px;
+  opacity:.7;display:flex;align-items:center;gap:8px}
+.nivel-label::before{content:'▸'}
+.niveles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:520px){.niveles{grid-template-columns:repeat(4,1fr)}}
+
+.niv-btn{font-family:var(--fd);font-style:italic;font-size:13px;font-weight:700;
+  border:1px solid var(--border);border-radius:4px;padding:14px 10px;
+  background:var(--card);color:var(--ink3);cursor:pointer;
+  transition:all .25s;text-align:center;display:flex;flex-direction:column;
+  align-items:center;gap:6px;letter-spacing:.01em}
+.niv-btn .niv-ico{font-size:26px;font-style:normal}
+.niv-btn:hover{border-color:rgba(255,193,7,.4);color:var(--ink2);
+  background:var(--gold-xl);transform:translateY(-2px)}
+.niv-btn.on{background:linear-gradient(135deg,rgba(255,193,7,.15),rgba(255,213,79,.1));
+  border-color:var(--gold);color:var(--gold);
+  box-shadow:0 0 24px rgba(255,193,7,.15);transform:translateY(-2px)}
+
+/* MAIN FORM */
+.main{max-width:700px;margin:0 auto 32px;padding:0 20px}
+.form-card{background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:26px;box-shadow:var(--sh);
+  position:relative;overflow:hidden}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+.f-label{font-family:var(--fm);font-size:10px;color:var(--gold);
+  letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;
+  opacity:.75;display:flex;align-items:center;gap:7px}
+.f-label::before{content:'▸';opacity:.6}
+
+textarea{width:100%;background:var(--card2);border:1px solid var(--border);
+  border-radius:6px;padding:16px;font-family:var(--ff);font-size:14.5px;
+  color:var(--ink);resize:none;outline:none;min-height:120px;line-height:1.65;
+  transition:border-color .2s;font-style:italic}
+textarea:focus{border-color:rgba(255,193,7,.5);box-shadow:0 0 0 3px rgba(255,193,7,.07)}
+textarea::placeholder{color:var(--ink3);font-style:italic}
+
+.char-count{text-align:right;font-family:var(--fm);font-size:10px;
+  color:var(--ink3);margin-top:6px}
+
+.btn-row{margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+.btn{font-family:var(--fd);font-weight:700;border:none;border-radius:4px;
+  padding:14px 32px;cursor:pointer;transition:all .22s;
+  display:inline-flex;align-items:center;gap:9px;letter-spacing:.03em}
+.btn-main{background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  color:#1a0a00;font-size:16px;font-style:italic;
+  box-shadow:0 4px 20px rgba(255,193,7,.25)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,193,7,.35)}
+.btn-main:active{transform:scale(.98)}
+.btn-main:disabled{opacity:.45;cursor:not-allowed;transform:none !important;box-shadow:none}
+.btn-sec{background:var(--card2);border:1px solid var(--border);
+  color:var(--ink3);font-size:13px;font-style:italic;padding:12px 20px}
+.btn-sec:hover{border-color:rgba(255,193,7,.3);color:var(--gold)}
+
+/* LOADING */
+.loading{text-align:center;padding:28px;animation:fadeUp .3s ease}
+.dots{display:inline-flex;gap:6px;margin-bottom:10px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--gold);
+  animation:blink 1.2s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
+.loading-txt{font-family:var(--fm);font-size:11px;color:var(--ink3);
+  letter-spacing:.1em;text-transform:uppercase}
+
+/* RESULTADO */
+.result-card{background:linear-gradient(135deg,var(--card),rgba(74,40,0,.4));
+  border:1px solid rgba(255,193,7,.18);border-radius:8px;
+  padding:32px;margin-top:22px;position:relative;overflow:hidden;
+  animation:pop .5s ease;box-shadow:var(--sh-lg)}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.result-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,193,7,.3),transparent)}
+
+.r-nivel{font-family:var(--fm);font-size:10px;color:var(--gold);
+  letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-bottom:18px;
+  display:flex;align-items:center;gap:8px}
+.r-nivel::before,.r-nivel::after{content:'✦';font-size:8px;opacity:.5}
+
+.r-sep{height:1px;background:linear-gradient(90deg,transparent,rgba(255,193,7,.2),transparent);
+  margin:20px 0}
+
+.r-text{font-family:var(--fd);font-size:clamp(15px,2.5vw,18px);
+  font-style:italic;color:var(--ink);line-height:1.95;
+  animation:fadeUp .5s ease}
+.r-text::first-letter{font-size:3em;float:left;line-height:.8;
+  margin-right:10px;color:var(--gold);padding-top:6px;font-style:italic}
+
+.r-marks{text-align:center;font-size:18px;opacity:.3;letter-spacing:12px;margin:16px 0}
+.r-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.r-btn{font-family:var(--fm);font-size:10px;color:var(--ink3);
+  background:var(--card2);border:1px solid var(--border);
+  padding:8px 14px;cursor:pointer;border-radius:3px;
+  transition:all .2s;letter-spacing:.06em;text-transform:uppercase}
+.r-btn:hover{border-color:rgba(255,193,7,.3);color:var(--gold)}
+
+/* EJEMPLOS */
+.ejemplos{max-width:700px;margin:0 auto 32px;padding:0 20px}
+.ej-label{font-family:var(--fd);font-style:italic;font-size:18px;
+  color:var(--ink2);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.ej-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.ej-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.ej-grid{grid-template-columns:1fr}}
+
+.ej-card{background:var(--card);border:1px solid var(--border);
+  border-radius:6px;padding:15px;cursor:pointer;transition:all .22s}
+.ej-card:hover{border-color:rgba(255,193,7,.25);transform:translateY(-2px);
+  box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.ej-card:active{transform:scale(.98)}
+.ej-cat{font-family:var(--fm);font-size:9px;color:var(--gold);
+  text-transform:uppercase;letter-spacing:.1em;opacity:.7;margin-bottom:6px}
+.ej-txt{font-size:13px;color:var(--ink3);font-style:italic;line-height:1.5}
+
+/* API KEY MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);animation:fadeUp .2s ease}
+.modal{background:var(--card);border:1px solid rgba(255,193,7,.2);
+  border-radius:8px;padding:32px;width:480px;max-width:92vw;
+  box-shadow:var(--sh-lg);position:relative}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.modal-title{font-family:var(--fd);font-size:20px;font-style:italic;
+  color:var(--gold);margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--ink3);margin-bottom:20px;line-height:1.6}
+.modal-inp{width:100%;background:var(--card2);border:1px solid var(--border);
+  border-radius:5px;padding:12px 14px;font-family:var(--fm);font-size:12px;
+  color:var(--ink);outline:none;transition:border-color .2s;margin-bottom:8px}
+.modal-inp:focus{border-color:rgba(255,193,7,.4)}
+.modal-inp::placeholder{color:var(--ink3)}
+.modal-note{font-size:11px;color:var(--ink3);margin-bottom:18px;
+  font-family:var(--fm);line-height:1.6;
+  background:rgba(255,193,7,.04);border:1px solid rgba(255,193,7,.1);
+  padding:10px;border-radius:4px}
+.modal-note a{color:var(--gold);text-decoration:none}
+.modal-note a:hover{text-decoration:underline}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:#1a0a00;border-radius:4px;
+  padding:12px 24px;font-family:var(--fd);font-style:italic;
+  font-size:14px;font-weight:700;z-index:999;
+  white-space:nowrap;animation:pop .3s ease;
+  box-shadow:0 4px 20px rgba(255,193,7,.4)}
+
+/* FOOTER */
+footer{text-align:center;padding:24px;color:var(--ink3);font-size:12px;
+  border-top:1px solid var(--border);background:rgba(0,0,0,.3);
+  font-style:italic}
+
+/* MOBILE */
+@media(max-width:600px){
+  header{padding:14px 18px}
+  .brand-name{font-size:18px}
+  .btn-main{font-size:14px;padding:12px 22px}
+}
+</style>
+</head>
+<body>
+
+<!-- API KEY MODAL -->
+<div class="overlay" id="apiModal" style="display:none">
+  <div class="modal">
+    <div class="modal-title">🔑 API Key de Anthropic</div>
+    <div class="modal-sub">Para que el drama funcione, necesitas una API key de Anthropic. Se guarda solo en tu navegador.</div>
+    <input class="modal-inp" type="password" id="apiInput" placeholder="sk-ant-api03-..."/>
+    <div class="modal-note">
+      Obtén tu key gratis en <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a><br/>
+      ⚠ La key se guarda en tu navegador (localStorage) y nunca se envía a ningún servidor nuestro.
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-sec" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-main" onclick="saveKey()" style="font-size:14px;padding:11px 24px">Guardar y Dramatizar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" style="display:none">✦ Copiado</div>
+
+<header>
+  <span class="brand-ico">🎭</span>
+  <div>
+    <span class="brand-name">El Dramaficador</span>
+    <span class="brand-sub">Pro</span>
+  </div>
+  <div class="header-r">
+    <button class="api-btn" onclick="openModal()">⚙ API Key</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="curtain curtain-l"></div>
+  <div class="curtain curtain-r"></div>
+  <div class="hero-eyebrow">Convierte lo trivial en épico</div>
+  <h1 class="hero-title">
+    Tu Problema<br/>
+    <span class="hero-title-2">Merece Más Drama</span>
+  </h1>
+  <p class="hero-sub">
+    ¿Se te acabó el detergente? ¿El café estaba frío?<br/>
+    No sufras en silencio. Deja que la IA convierta tu tragedia<br/>
+    cotidiana en la obra dramática que merece ser.
+  </p>
+</div>
+
+<!-- NIVEL -->
+<div class="nivel-section">
+  <div class="nivel-label">Nivel de Drama</div>
+  <div class="niveles">
+    <button class="niv-btn on" data-nivel="telenovela" onclick="selectNivel(this)">
+      <span class="niv-ico">😭</span>Telenovela
+    </button>
+    <button class="niv-btn" data-nivel="shakesperiano" onclick="selectNivel(this)">
+      <span class="niv-ico">🎭</span>Shakesperiano
+    </button>
+    <button class="niv-btn" data-nivel="apocalipsis" onclick="selectNivel(this)">
+      <span class="niv-ico">🌋</span>Fin del Mundo
+    </button>
+    <button class="niv-btn" data-nivel="twitter" onclick="selectNivel(this)">
+      <span class="niv-ico">🔥</span>Twitter Drama
+    </button>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="main">
+  <div class="form-card">
+    <div class="f-label">Tu problema (por menor que sea)</div>
+    <textarea id="problema" maxlength="300"
+      placeholder="Ej: Se me cayó el helado al suelo... El Wi-Fi anduvo lento 3 segundos... No encuentro el control del televisor..."
+      oninput="updateCount()"></textarea>
+    <div class="char-count"><span id="charCount">0</span>/300</div>
+
+    <div class="btn-row">
+      <button class="btn btn-main" id="dramatizarBtn" onclick="dramatizar()">
+        🎭 ¡Dramatizar!
+      </button>
+      <button class="btn btn-sec" id="limpiarBtn" onclick="limpiar()" style="display:none">
+        🗑 Limpiar
+      </button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loading" style="display:none">
+    <div class="loading">
+      <div class="dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="loading-txt" id="loadingTxt">Elevando el drama a niveles insostenibles...</div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div id="resultado" style="display:none">
+    <div class="result-card">
+      <div class="r-nivel" id="rNivel">Modo Telenovela Activado</div>
+      <div class="r-marks">✦ ✦ ✦</div>
+      <div class="r-text" id="rText"></div>
+      <div class="r-marks">✦ ✦ ✦</div>
+      <div class="r-actions">
+        <button class="r-btn" onclick="copiar()">📋 Copiar</button>
+        <button class="r-btn" onclick="compartir()">🔗 Compartir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJEMPLOS -->
+<div class="ejemplos">
+  <div class="ej-label">🎬 Tragedias recientes</div>
+  <div class="ej-grid">
+    <div class="ej-card" onclick="useEjemplo('Se me acabó el detergente justo cuando más lo necesitaba')">
+      <div class="ej-cat">Hogar Trágico</div>
+      <div class="ej-txt">"Se me acabó el detergente justo cuando más lo necesitaba"</div>
+    </div>
+    <div class="ej-card" onclick="useEjemplo('Se me quedó sin batería el teléfono con un 3%')">
+      <div class="ej-cat">Crisis Digital</div>
+      <div class="ej-txt">"Se me quedó sin batería el teléfono con un 3%"</div>
+    </div>
+    <div class="ej-card" onclick="useEjemplo('El café que me preparé estaba frío')">
+      <div class="ej-cat">Traición Matutina</div>
+      <div class="ej-txt">"El café que me preparé estaba frío"</div>
+    </div>
+    <div class="ej-card" onclick="useEjemplo('Perdí mi airpod izquierdo, solo tengo el derecho')">
+      <div class="ej-cat">Pérdida Irreparable</div>
+      <div class="ej-txt">"Perdí mi airpod izquierdo, solo tengo el derecho"</div>
+    </div>
+    <div class="ej-card" onclick="useEjemplo('El Wi-Fi anduvo lento durante 5 segundos')">
+      <div class="ej-cat">Tragedia Tecnológica</div>
+      <div class="ej-txt">"El Wi-Fi anduvo lento durante 5 segundos"</div>
+    </div>
+    <div class="ej-card" onclick="useEjemplo('Se me cayó el helado al suelo después del primer mordisco')">
+      <div class="ej-cat">Injusticia Universal</div>
+      <div class="ej-txt">"Se me cayó el helado al suelo después del primer mordisco"</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  El Dramaficador Pro · by VibeCodingChile<br/>
+  <span style="font-size:10px;opacity:.5">Ningún problema real fue solucionado durante la elaboración de esta app.</span>
+</footer>
+
+<script>
+// ── ESTADO ──────────────────────────────────────────────────────
+let nivelActual = "telenovela";
+let resultadoActual = "";
+
+// ── API KEY ──────────────────────────────────────────────────────
+function getKey() {
+  return localStorage.getItem("dramatizador_key") || "";
+}
+function openModal() {
+  document.getElementById("apiInput").value = getKey();
+  document.getElementById("apiModal").style.display = "flex";
+}
+function closeModal() {
+  document.getElementById("apiModal").style.display = "none";
+}
+function saveKey() {
+  const key = document.getElementById("apiInput").value.trim();
+  if (!key) { alert("Ingresa una API key válida"); return; }
+  localStorage.setItem("dramatizador_key", key);
+  closeModal();
+  showToast("🔑 API Key guardada — ¡A dramatizar!");
+  // Si había un problema esperando, dramatizar
+  const problema = document.getElementById("problema").value.trim();
+  if (problema) dramatizar();
+}
+// Cerrar modal al hacer click afuera
+document.getElementById("apiModal").addEventListener("click", function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ── UI HELPERS ───────────────────────────────────────────────────
+function updateCount() {
+  const len = document.getElementById("problema").value.length;
+  document.getElementById("charCount").textContent = len;
+}
+function selectNivel(btn) {
+  document.querySelectorAll(".niv-btn").forEach(b => b.classList.remove("on"));
+  btn.classList.add("on");
+  nivelActual = btn.dataset.nivel;
+}
+function useEjemplo(texto) {
+  document.getElementById("problema").value = texto;
+  updateCount();
+  document.getElementById("problema").focus();
+  document.getElementById("limpiarBtn").style.display = "inline-flex";
+}
+function limpiar() {
+  document.getElementById("problema").value = "";
+  updateCount();
+  document.getElementById("resultado").style.display = "none";
+  document.getElementById("limpiarBtn").style.display = "none";
+  resultadoActual = "";
+}
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 2500);
+}
+function copiar() {
+  if (!resultadoActual) return;
+  navigator.clipboard.writeText(resultadoActual)
+    .then(() => showToast("✦ Drama copiado — comparte tu tragedia"))
+    .catch(() => {
+      // fallback
+      const ta = document.createElement("textarea");
+      ta.value = resultadoActual;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      showToast("✦ Copiado al portapapeles");
+    });
+}
+function compartir() {
+  if (navigator.share && resultadoActual) {
+    navigator.share({ title: "El Dramaficador Pro", text: resultadoActual })
+      .catch(() => copiar());
+  } else { copiar(); }
+}
+
+// ── PROMPTS ───────────────────────────────────────────────────────
+const PROMPTS = {
+  telenovela: (p) => `Eres el escritor de la peor y mejor telenovela latinoamericana de todos los tiempos. Toma este problema cotidiano y conviértelo en el drama más exagerado y ridículo posible, con todo el estilo de una telenovela: gritos, traiciones, lágrimas, giros dramáticos inesperados, flashbacks, música de fondo implícita y revelaciones impactantes.
+
+El problema a dramatizar: "${p}"
+
+Escribe 4-5 párrafos con el máximo drama posible. En español chileno. El lector debe reírse y llorar a la vez. Que la última línea sea un cliffhanger devastador.`,
+
+  shakesperiano: (p) => `Eres Shakespeare resucitado pero hablas español chileno. Toma este problema absolutamente trivial y conviértelo en una tragedia épica de dimensiones cósmicas, con monólogos grandilocuentes, referencias al destino, a los dioses, a la condición humana, a las estrellas y al tiempo que todo lo consume.
+
+El problema a dramatizar: "${p}"
+
+4-5 párrafos. Mezcla lenguaje arcaico con chilenismos. Que haya un monólogo interior. Que menciones a las Parcas o al destino al menos una vez. Que la última línea sea la más poética y devastadora que hayas escrito jamás.`,
+
+  apocalipsis: (p) => `Eres el narrador de un documental de Discovery Channel sobre el fin del mundo. Con voz grave y pausada. Toma este problema completamente trivial y descríbelo como si fuera el primer signo del Apocalipsis, con consecuencias que afectarán a toda la humanidad, la extinción de especies, el colapso de la civilización y el fin del universo conocido.
+
+El problema a dramatizar: "${p}"
+
+4-5 párrafos. Tono de voz en off dramático. Incluye estadísticas inventadas, cita a científicos ficticios y menciona cómo los animales ya lo presintieron. En español chileno. La última oración debe ser la más ominosa del universo.`,
+
+  twitter: (p) => `Eres el rey/reina del drama en Twitter/X. El influencer más exagerado del internet chileno. Convierte este problema en el hilo de Twitter más viral, dramático y desproporcionado de la historia de las redes sociales.
+
+El problema a dramatizar: "${p}"
+
+Escribe como si fuera un hilo de Twitter real:
+- Empieza con "HILO:" o "No están listos para lo que me pasó."
+- Usa muchos emojis, MAYÚSCULAS para énfasis, puntos suspensivos...
+- Cada párrafo es como un tweet (máx 3 líneas)
+- Incluye "les juro que", "no lo puedo creer", "necesito que lo entiendan"
+- Termina con una reflexión profunda completamente innecesaria
+- 5-6 "tweets" en el hilo`
+};
+
+const NIVEL_LABELS = {
+  telenovela: "😭 Modo Telenovela Activado",
+  shakesperiano: "🎭 Modo Shakesperiano Activado",
+  apocalipsis: "🌋 Modo Fin del Mundo Activado",
+  twitter: "🔥 Modo Twitter Drama Activado",
+};
+
+const LOADING_MSGS = [
+  "Elevando el drama a niveles insostenibles...",
+  "Consultando a las musas del teatro...",
+  "Agregando capas innecesarias de pathos...",
+  "Buscando el cliffhanger perfecto...",
+  "Aplicando drama en cantidades industriales...",
+];
+
+// ── MAIN FUNCTION ────────────────────────────────────────────────
+async function dramatizar() {
+  const problema = document.getElementById("problema").value.trim();
+  if (!problema) {
+    document.getElementById("problema").focus();
+    return;
+  }
+
+  const key = getKey();
+  if (!key) {
+    openModal();
+    return;
+  }
+
+  // UI: loading
+  document.getElementById("dramatizarBtn").disabled = true;
+  document.getElementById("resultado").style.display = "none";
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("limpiarBtn").style.display = "inline-flex";
+
+  // Rotate loading messages
+  let msgIdx = 0;
+  const msgInterval = setInterval(() => {
+    msgIdx = (msgIdx + 1) % LOADING_MSGS.length;
+    document.getElementById("loadingTxt").textContent = LOADING_MSGS[msgIdx];
+  }, 1800);
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": key,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1024,
+        messages: [{
+          role: "user",
+          content: PROMPTS[nivelActual](problema)
+        }]
+      })
+    });
+
+    clearInterval(msgInterval);
+
+    if (response.status === 401) {
+      throw new Error("API Key inválida. Ve a ⚙ API Key y verifica.");
+    }
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error?.message || `Error ${response.status}`);
+    }
+
+    const data = await response.json();
+    const texto = data.content?.[0]?.text || "El drama fue tan intenso que colapsó el servidor.";
+
+    resultadoActual = texto;
+
+    // Mostrar resultado
+    document.getElementById("rNivel").textContent = NIVEL_LABELS[nivelActual];
+    document.getElementById("rText").textContent = texto;
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("resultado").style.display = "block";
+
+    // Scroll al resultado
+    setTimeout(() => {
+      document.getElementById("resultado").scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+
+  } catch(err) {
+    clearInterval(msgInterval);
+    resultadoActual = `Error: ${err.message}`;
+    document.getElementById("rNivel").textContent = "⚠ Error Dramático";
+    document.getElementById("rText").textContent = `El dramaficador sufrió una tragedia técnica:\n\n${err.message}\n\nIncluso las máquinas tienen días malos.`;
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("resultado").style.display = "block";
+  }
+
+  document.getElementById("dramatizarBtn").disabled = false;
+}
+
+// Enter = dramatizar
+document.getElementById("problema").addEventListener("keydown", function(e) {
+  if (e.key === "Enter" && e.ctrlKey) dramatizar();
+});
+
+// Mostrar hint si no hay key
+window.addEventListener("load", () => {
+  if (!getKey()) {
+    const hint = document.createElement("div");
+    hint.style.cssText = "position:fixed;bottom:20px;right:20px;background:rgba(255,193,7,.12);border:1px solid rgba(255,193,7,.3);color:var(--gold);padding:12px 18px;border-radius:6px;font-family:var(--fm);font-size:11px;letter-spacing:.06em;cursor:pointer;z-index:200;transition:opacity .3s;max-width:200px;line-height:1.6;text-align:center";
+    hint.innerHTML = "⚙ Configura tu<br>API Key primero";
+    hint.onclick = () => { openModal(); hint.remove(); };
+    document.body.appendChild(hint);
+    setTimeout(() => { hint.style.opacity = "0"; setTimeout(() => hint.remove(), 300); }, 5000);
+  }
+});
+</script>
+</body>
+</html>
